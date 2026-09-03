@@ -164,7 +164,7 @@ score = 10 * (
 )
 ```
 
-The annotation must contain the `slot`, `core`, and `memory` keys. Each value must be a non-negative integer, and at least one value must be greater than zero. Key order and surrounding whitespace do not matter. If the annotation is absent, HAMi uses `slot=1,core=1,memory=1`, which preserves the default scoring behavior. When the admission webhook is enabled, invalid annotations are rejected when a Pod requesting a HAMi-managed resource is created. The scheduler also validates the annotation so invalid values cannot be used when admission validation is unavailable.
+The annotation must contain the `slot`, `core`, and `memory` keys. Each value must be a non-negative integer, and at least one value must be greater than zero. Key order and surrounding whitespace do not matter. If the annotation is absent, HAMi uses `slot=1,core=1,memory=1`, which preserves the default scoring behavior. When the admission webhook is enabled, invalid annotations are rejected when a Pod requesting a HAMi-managed resource is created. If admission validation is unavailable, the scheduler rejects the scheduling attempt and the Pod remains unschedulable until the annotation is corrected.
 
 For example, consider two candidate GPUs after accounting for a Pod that requests one vGPU and 40% device memory:
 
