@@ -135,44 +135,48 @@ Node2 score: ((1+2)/4) * 10= 7.5
 
 #### Binpack
 
-Binpack 主要关注每张卡的计算能力和显存使用情况。使用越多，得分越高。
+Binpack 优先选择设备利用率得分较高的卡。以下示例假设每张卡有 10 个虚拟设备槽位，并且当前没有槽位被使用：
 
 ```text
-score: ((request.core + used.core) / allocatable.core + (request.mem + used.mem) / allocatable.mem)) * 10
+score: ((request.slot + used.slot) / allocatable.slot +
+        (request.core + used.core) / allocatable.core +
+        (request.mem + used.mem) / allocatable.mem) * 10
 ```
 
 1. GPU1 的 Binpack 评分信息如下
 
 ```text
-GPU1 Score: ((20+10)/100 + (1000+2000)/8000)) * 10 = 6.75
+GPU1 Score: ((1+0)/10 + (20+10)/100 + (1000+2000)/8000) * 10 = 7.75
 ```
 
 1. GPU2 的 Binpack 评分信息如下
 
 ```text
-GPU2 Score: ((20+70)/100 + (1000+6000)/8000)) * 10 = 17.75
+GPU2 Score: ((1+0)/10 + (20+70)/100 + (1000+6000)/8000) * 10 = 18.75
 ```
 
 因此，在 `Binpack` 策略中我们可以选择 `GPU2`。
 
 #### Spread
 
-Spread 主要关注每张卡的计算能力和显存使用情况。使用越少，得分越高。
+Spread 优先选择设备利用率得分较低的卡。使用相同的示例：
 
 ```text
-score: ((request.core + used.core) / allocatable.core + (request.mem + used.mem) / allocatable.mem)) * 10
+score: ((request.slot + used.slot) / allocatable.slot +
+        (request.core + used.core) / allocatable.core +
+        (request.mem + used.mem) / allocatable.mem) * 10
 ```
 
 1. GPU1 的 Spread 评分信息如下
 
 ```text
-GPU1 Score: ((20+10)/100 + (1000+2000)/8000)) * 10 = 6.75
+GPU1 Score: ((1+0)/10 + (20+10)/100 + (1000+2000)/8000) * 10 = 7.75
 ```
 
 1. GPU2 的 Spread 评分信息如下
 
 ```text
-GPU2 Score: ((20+70)/100 + (1000+6000)/8000)) * 10 = 17.75
+GPU2 Score: ((1+0)/10 + (20+70)/100 + (1000+6000)/8000) * 10 = 18.75
 ```
 
 因此，在 `Spread` 策略中我们可以选择 `GPU1`。
